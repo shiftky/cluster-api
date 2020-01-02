@@ -1,15 +1,14 @@
-# Quick Start
+# クイック スタート
 
-In this tutorial we'll cover the basics of how to use Cluster API to create one or more Kubernetes clusters.
+このチュートリアルでは Cluster API を使って 1 つ以上の Kubernetes クラスターを作成する方法の基本を説明します。
 
-{{#include ../tasks/installation.md}}
+{{#include ../tasks/installation-ja.md}}
 
-## Usage
+## 使用方法
 
-Now that we've got Cluster API, Bootstrap and Infrastructure resources installed,
-let's proceed to create a single node cluster.
+Cluster API 、ブートストラップおよびインフラストラクチャーリソースがインストールされたので、シングル ノード クラスターの作成に進みましょう。
 
-For the purpose of this tutorial, we'll name our cluster `capi-quickstart`.
+このチュートリアルでは、クラスターに `capi-quickstart` という名前をつけます。
 
 {{#tabs name:"tab-usage-cluster-resource" tabs:"AWS,Azure,Docker,GCP,vSphere,OpenStack"}}
 {{#tab AWS}}
@@ -33,9 +32,9 @@ kind: AWSCluster
 metadata:
   name: capi-quickstart
 spec:
-  # Change this value to the region you want to deploy the cluster in.
+  # この値をクラスターをデプロイするリージョンに変更します
   region: us-east-1
-  # Change this value to a valid SSH Key Pair present in your AWS Account.
+  # この値を AWS アカウントに存在する有効な SSH キーペアに変更します
   sshKeyName: default
 ```
 {{#/tab }}
@@ -61,12 +60,12 @@ kind: AzureCluster
 metadata:
   name: capi-quickstart
 spec:
-  # Change this value to the region you want to deploy the cluster in.
+  # この値をクラスターをデプロイするリージョンに変更します
   location: southcentralus
   networkSpec:
     vnet:
       name: capi-quickstart-vnet
-  # Change this value to the resource group you want to deploy the cluster in.
+  # この値をクラスターをデプロイするリソース グループに変更します
   resourceGroup: capi-quickstart
 ```
 {{#/tab }}
@@ -95,9 +94,9 @@ metadata:
 {{#tab GCP}}
 <aside class="note warning">
 
-<h1>Action Required</h1>
+<h1>必要なアクション</h1>
 
-Replace the project below with your unique value and update region if desired.
+必要に応じて以下のプロジェクトを固有の値に書き換えリージョンを更新します。
 
 </aside>
 
@@ -129,19 +128,19 @@ spec:
 
 <aside class="note warning">
 
-<h1>Action Required</h1>
+<h1>必要なアクション</h1>
 
-This quick start assumes the following vSphere environment which you should replace based on your own environment.
+このクイック スタートでは、あなたの環境に基づいて置き換える必要のある以下の vSphere 環境を想定しています。
 
-| Property       | Value                    | Description                                                                                                                                                           |
+| プロパティ       | 値                    | 説明                                                                                                                                                                     |
 |----------------|--------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| vCenter Server | 10.0.0.1                 | The IP address or fully-qualified domain name (FQDN) of the vCenter server                                                                                            |
-| Datacenter     | SDDC-Datacenter          | The datacenter to which VMs will be deployed                                                                                                                          |
-| Datastore      | DefaultDatastore         | The datastore to use for VMs                                                                                                                                          |
-| Resource Pool  | '*/Resources'            | The resource pool in which the VMs will be located. Please note that when using an * character in part of the inventory path, the entire value must be single quoted. |
-| VM Network     | vm-network-1             | The VM network to use for VMs                                                                                                                                         |
-| VM Folder      | vm                       | The VM folder in which VMs will be located                                                                                                                            |
-| VM Template    | ubuntu-1804-kube-v1.16.2 | The VM template to use for VMs                                                                                                                                        |
+| vCenter Server | 10.0.0.1                 | vCenter サーバーの IP アドレス、または完全修飾ドメイン名 (FQDN)                                                                                                              |
+| Datacenter     | SDDC-Datacenter          | VM がデプロイされるデータセンター                                                                                                                                          |
+| Datastore      | DefaultDatastore         | VM で使用するデータストア                                                                                                                                                |
+| Resource Pool  | '*/Resources'            | VM が配置されるリソース プール。インベントリ パスにアスタリスク (*) を使用する場合、全体をシングル クオートで囲う必要がある点に注意してください                                            |
+| VM Network     | vm-network-1             | VM で使用する VM ネットワーク                                                                                                                                            |
+| VM Folder      | vm                       | VM が配置される VM フォルダー                                                                                                                                            |
+| VM Template    | ubuntu-1804-kube-v1.16.2 | VM で使用する VM テンプレート                                                                                                                                            |
 
 </aside>
 
@@ -198,9 +197,9 @@ spec:
 
 <aside class="note warning">
 
-<h1>Action Required</h1>
+<h1>必要なアクション</h1>
 
-These examples include environment variables that you should substitute before creating the resources.
+これらの例には、リソースを作成する前に置き換える必要のある環境変数が含まれています。
 
 </aside>
 
@@ -240,14 +239,14 @@ metadata:
   name: cloud-config
 type: Opaque
 data:
-  # This file has to be in the regular OpenStack cloud.yaml format
+  # このファイルは通常の OpenStack cloud.yaml 形式である必要があります
   clouds.yaml: ${OPENSTACK_CLOUD_CONFIG_B64ENCODED}
   cacert: ${OPENSTACK_CLOUD_CACERT_B64ENCODED}
 ```
 {{#/tab }}
 {{#/tabs }}
 
-Now that we've created the cluster object, we can create a control plane Machine.
+クラスター オブジェクトを作成したので、コントロール プレーン マシーン を作成できます。
 
 {{#tabs name:"tab-usage-controlplane-resource" tabs:"AWS,Azure,Docker,GCP,vSphere,OpenStack"}}
 {{#tab AWS}}
@@ -278,9 +277,9 @@ metadata:
   name: capi-quickstart-controlplane-0
 spec:
   instanceType: t3.large
-  # This IAM profile is part of the pre-requisites.
+  # この IAM プロファイルは前提条件の一部です
   iamInstanceProfile: "control-plane.cluster-api-provider-aws.sigs.k8s.io"
-  # Change this value to a valid SSH Key Pair present in your AWS Account.
+  # この値を AWS アカウントに存在する有効な SSH キーペアに変更します
   sshKeyName: default
 ---
 apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
@@ -288,8 +287,8 @@ kind: KubeadmConfig
 metadata:
   name: capi-quickstart-controlplane-0
 spec:
-  # For more information about these values,
-  # refer to the Kubeadm Bootstrap Provider documentation.
+  # これらの値に関するより詳細な情報は
+  # Kubeadm ブートストラップ プロバイダーのドキュメントを参照してください
   initConfiguration:
     nodeRegistration:
       name: '{{ ds.meta_data.local_hostname }}'
@@ -308,9 +307,10 @@ spec:
 
 <aside class="note warning">
 
-<h1>Action Required</h1>
+<h1>必要なアクション</h1>
 
-These examples include environment variables that you should substitute before creating the resources. After pasting the content of the below yaml into `controlplane.yaml` you can run the following commands to inject the necessary variables and create the resources:
+これらの例には、リソースを作成する前に置き換える必要のある環境変数が含まれています。
+以下の YAML の内容を `controlplane.yaml` に貼り付けた後、次のコマンドを実行して必要な変数を注入し、リソースを作成できます:
 
 ```bash
 export AZURE_SUBSCRIPTION_ID_B64="$(echo -n "$AZURE_SUBSCRIPTION_ID" | base64 | tr -d '\n')"
@@ -374,8 +374,8 @@ kind: KubeadmConfig
 metadata:
   name: capi-quickstart-controlplane-0
 spec:
-  # For more information about these values,
-  # refer to the Kubeadm Bootstrap Provider documentation.
+  # これらの値に関するより詳細な情報は
+  # Kubeadm ブートストラップ プロバイダーのドキュメントを参照してください
   clusterConfiguration:
     apiServer:
       extraArgs:
@@ -465,25 +465,25 @@ spec:
   initConfiguration:
     nodeRegistration:
       kubeletExtraArgs:
-        # Default thresholds are higher to provide a buffer before resources
-        # are completely depleted, at the cost of requiring more total
-        # resources. These low thresholds allow running with fewer resources.
-        # Appropriate for testing or development only.
+        # リソースが完全に使い果たされる前にバッファを提供するために、デフォルトのしきい値は
+        # 高くなっていますが、より多くのリソースを必要とします。
+        # これらの低いしきい値によって、より少ないリソースで実行できます。
+        # テストまたは開発のみに適しています。
         eviction-hard: nodefs.available<0%,nodefs.inodesFree<0%,imagefs.available<0%
   clusterConfiguration:
     controllerManager:
       extraArgs:
-        # Enables dynamic storage provisioning without a cloud provider.
-        # Appropriate for testing or development only.
+        # クラウド プロバイダーなしでダイナミック ストレージ プロビジョニングを有効にします。
+        # テストまたは開発のみに適しています。
         enable-hostpath-provisioner: "true"
 ```
 {{#/tab }}
 {{#tab GCP}}
 <aside class="note warning">
 
-<h1>Action Required</h1>
+<h1>必要なアクション</h1>
 
-Feel free to update instance types and zones below.
+以下のインスタンス タイプとゾーンを自由に更新してください。
 
 </aside>
 
@@ -520,8 +520,8 @@ kind: KubeadmConfig
 metadata:
   name: capi-quickstart-controlplane-0
 spec:
-  # For more information about these values,
-  # refer to the Kubeadm Bootstrap Provider documentation.
+  # これらの値に関するより詳細な情報は
+  # Kubeadm ブートストラップ プロバイダーのドキュメントを参照してください
   initConfiguration:
     nodeRegistration:
       name: '{{ ds.meta_data.local_hostname }}'
@@ -540,20 +540,19 @@ spec:
 
 <aside class="note warning">
 
-<h1>Action Required</h1>
+<h1>必要なアクション</h1>
 
-This quick start assumes the following vSphere environment which you should replace based on your own environment:
+このクイック スタートでは、あなたの環境に基づいて置き換える必要のある以下の vSphere 環境を想定しています。
 
-| Property       | Value                    | Description                                                                                                                                                           |
+| プロパティ       | 値                    | 説明                                                                                                                                                                     |
 |----------------|--------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| vCenter Server | 10.0.0.1                 | The IP address or fully-qualified domain name (FQDN) of the vCenter server                                                                                            |
-| Datacenter     | SDDC-Datacenter          | The datacenter to which VMs will be deployed                                                                                                                          |
-| Datastore      | DefaultDatastore         | The datastore to use for VMs                                                                                                                                          |
-| Resource Pool  | '*/Resources'            | The resource pool in which the VMs will be located. Please note that when using an * character in part of the inventory path, the entire value must be single quoted. |
-| VM Network     | vm-network-1             | The VM network to use for VMs                                                                                                                                         |
-| VM Folder      | vm                       | The VM folder in which VMs will be located                                                                                                                            |
-| VM Template    | ubuntu-1804-kube-v1.16.2 | The VM template to use for VMs                                                                                                                                        |
-
+| vCenter Server | 10.0.0.1                 | vCenter サーバーの IP アドレス、または完全修飾ドメイン名 (FQDN)                                                                                                              |
+| Datacenter     | SDDC-Datacenter          | VM がデプロイされるデータセンター                                                                                                                                          |
+| Datastore      | DefaultDatastore         | VM で使用するデータストア                                                                                                                                                |
+| Resource Pool  | '*/Resources'            | VM が配置されるリソース プール。インベントリ パスにアスタリスク (*) を使用する場合、全体をシングル クオートで囲う必要がある点に注意してください                                            |
+| VM Network     | vm-network-1             | VM で使用する VM ネットワーク                                                                                                                                            |
+| VM Folder      | vm                       | VM が配置される VM フォルダー                                                                                                                                            |
+| VM Template    | ubuntu-1804-kube-v1.16.2 | VM で使用する VM テンプレート                                                                                                                                            |
 </aside>
 
 ```yaml
@@ -627,9 +626,9 @@ spec:
 
 <aside class="note warning">
 
-<h1>Action Required</h1>
+<h1>必要なアクション</h1>
 
-These examples include environment variables that you should substitute before creating the resources.
+これらの例には、リソースを作成する前に置き換える必要のある環境変数が含まれています。
 
 </aside>
 
@@ -671,8 +670,8 @@ kind: KubeadmConfig
 metadata:
   name: capi-quickstart-controlplane-0
 spec:
-  # For more information about these values,
-  # refer to the Kubeadm Bootstrap Provider documentation.
+  # これらの値に関するより詳細な情報は
+  # Kubeadm ブートストラップ プロバイダーのドキュメントを参照してください
   initConfiguration:
     localAPIEndpoint:
       advertiseAddress: '{{ ds.ec2_metadata.local_ipv4 }}'
@@ -713,8 +712,7 @@ spec:
     owner: root
     permissions: "0600"
     encoding: base64
-    # This file has to be in the format of the
-    # OpenStack cloud provider 
+    # このファイルは OpenStack クラウド プロバイダーの形式である必要があります
     content: |-
       ${OPENSTACK_CLOUD_CONFIG_B64ENCODED}
   - path: /etc/certs/cacert
@@ -731,7 +729,7 @@ spec:
 {{#/tab }}
 {{#/tabs }}
 
-After the controlplane is up and running, let's retrieve the [target cluster] Kubeconfig:
+コントロール プレーンが起動し実行されたら、 [target cluster] の Kubeconfig を取得しましょう:
 
 {{#tabs name:"tab-getting-kubeconfig" tabs:"AWS|Azure|GCP|vSphere|OpenStack, Docker"}}
 {{#tab AWS|Azure|GCP|vSphere|OpenStack}}
@@ -753,21 +751,20 @@ kubectl --namespace=default get secret/capi-quickstart-kubeconfig -o json \
   > ./capi-quickstart.kubeconfig
 ```
 
-When using docker-for-mac MacOS, you will need to do a couple of additional
-steps to get the correct kubeconfig:
+MacOS で docker-for-mac を使用する場合は、正しい kubeconfig を取得するためにいくつかの追加の手順が必要になります:
 
 ```bash
-# Point the kubeconfig to the exposed port of the load balancer, rather than the inaccessible container IP.
+# アクセスできないコンテナ IP ではなく、ロード バランサーの公開ポートを kubeconfig に設定します
 sed -i -e "s/server:.*/server: https:\/\/$(docker port capi-quickstart-lb 6443/tcp | sed "s/0.0.0.0/127.0.0.1/")/g" ./capi-quickstart.kubeconfig
 
-# Ignore the CA, because it is not signed for 127.0.0.1
+# 127.0.0.1 に署名されていないため、 CA を無視します
 sed -i -e "s/certificate-authority-data:.*/insecure-skip-tls-verify: true/g" ./capi-quickstart.kubeconfig
 ```
 
 {{#/tab }}
 {{#/tabs }}
 
-Deploy a CNI solution, Calico is used here as an example.
+CNI ソリューションをデプロイします。ここでは例として Calico を使用します。
 
 {{#tabs name:"tab-usage-addons" tabs:"Calico"}}
 {{#tab Calico}}
@@ -778,9 +775,11 @@ kubectl --kubeconfig=./capi-quickstart.kubeconfig \
 ```
 
 <aside class="note warning">
-<h1>Action Required (Docker provider v0.2.0 only)</h1>
 
-A [known issue](https://github.com/kubernetes-sigs/kind/issues/891) affects Calico with the Docker provider v0.2.0. After you deploy Calico, apply this patch to work around the issue:
+<h1>必要なアクション (Docker プロバイダー v0.2.0 のみ)</h1>
+
+[既知の問題](https://github.com/kubernetes-sigs/kind/issues/891) が Calico と Docker プロバイダー v0.2.0 の組み合わせに影響を及ぼします。
+Calico をデプロイしたあとに、このパッチを適用して問題を回避します:
 
 ```bash
 kubectl --kubeconfig=./capi-quickstart.kubeconfig \
@@ -800,14 +799,14 @@ spec:
 {{#/tab }}
 {{#/tabs }}
 
-After a short while, our control plane should be up and in `Ready` state,
-let's check the status using `kubectl get nodes`:
+しばらくすると、コントロール プレーンが起動し、状態が `Ready` になっているはずです。
+`kubectl get nodes` を使ってステータスを確認しましょう:
 
 ```bash
 kubectl --kubeconfig=./capi-quickstart.kubeconfig get nodes
 ```
 
-Finishing up, we'll create a single node _MachineDeployment_.
+仕上げに、シングル ノードの _MachineDeployment_ を作成します。
 
 {{#tabs name:"tab-usage-machinedeployment" tabs:"AWS,Azure,Docker,GCP,vSphere,OpenStack"}}
 {{#tab AWS}}
@@ -819,9 +818,9 @@ metadata:
   name: capi-quickstart-worker
   labels:
     cluster.x-k8s.io/cluster-name: capi-quickstart
-    # Labels beyond this point are for example purposes,
-    # feel free to add more or change with something more meaningful.
-    # Sync these values with spec.selector.matchLabels and spec.template.metadata.labels.
+    # これより先のラベルは例示目的のものです。
+    # より意味のあるものを追加したり変更したりしてください。
+    # これらの値を spec.selector.matchLabels および spec.template.metadata.labels と一致させます。
     nodepool: nodepool-0
 spec:
   replicas: 1
@@ -854,9 +853,9 @@ spec:
   template:
     spec:
       instanceType: t3.large
-      # This IAM profile is part of the pre-requisites.
+      # この IAM プロファイルは前提条件の一部です
       iamInstanceProfile: "nodes.cluster-api-provider-aws.sigs.k8s.io"
-      # Change this value to a valid SSH Key Pair present in your AWS Account.
+      # この値を AWS アカウントに存在する有効な SSH キーペアに変更します
       sshKeyName: default
 ---
 apiVersion: bootstrap.cluster.x-k8s.io/v1alpha3
@@ -866,8 +865,8 @@ metadata:
 spec:
   template:
     spec:
-      # For more information about these values,
-      # refer to the Kubeadm Bootstrap Provider documentation.
+      # これらの値に関するより詳細な情報は
+      # Kubeadm ブートストラップ プロバイダーのドキュメントを参照してください
       joinConfiguration:
         nodeRegistration:
           name: '{{ ds.meta_data.local_hostname }}'
@@ -880,10 +879,10 @@ spec:
 
 <aside class="note warning">
 
-<h1>Action Required</h1>
+<h1>必要なアクション</h1>
 
-These examples include environment variables that you should substitute before creating the resources. After pasting the content of the below yaml into `machinedeployment.yaml` you can run the following commands to inject the necessary variables and create the resources:
-
+これらの例には、リソースを作成する前に置き換える必要のある環境変数が含まれています。
+以下の YAML の内容を `machinedeployment.yaml` に貼り付けた後、次のコマンドを実行して必要な変数を注入し、リソースを作成できます:
 
 ```bash
 export AZURE_SUBSCRIPTION_ID_B64="$(echo -n "$AZURE_SUBSCRIPTION_ID" | base64 | tr -d '\n')"
@@ -910,9 +909,9 @@ metadata:
   name: capi-quickstart-node
   labels:
     cluster.x-k8s.io/cluster-name: capi-quickstart
-    # Labels beyond this point are for example purposes,
-    # feel free to add more or change with something more meaningful.
-    # Sync these values with spec.selector.matchLabels and spec.template.metadata.labels.
+    # これより先のラベルは例示目的のものです。
+    # より意味のあるものを追加したり変更したりしてください。
+    # これらの値を spec.selector.matchLabels および spec.template.metadata.labels と一致させます。
     nodepool: nodepool-0
 spec:
   replicas: 1
@@ -1008,9 +1007,9 @@ metadata:
   name: capi-quickstart-worker
   labels:
     cluster.x-k8s.io/cluster-name: capi-quickstart
-    # Labels beyond this point are for example purposes,
-    # feel free to add more or change with something more meaningful.
-    # Sync these values with spec.selector.matchLabels and spec.template.metadata.labels.
+    # これより先のラベルは例示目的のものです。
+    # より意味のあるものを追加したり変更したりしてください。
+    # これらの値を spec.selector.matchLabels および spec.template.metadata.labels と一致させます。
     nodepool: nodepool-0
 spec:
   replicas: 1
@@ -1050,8 +1049,8 @@ metadata:
 spec:
   template:
     spec:
-      # For more information about these values,
-      # refer to the Kubeadm Bootstrap Provider documentation.
+      # これらの値に関するより詳細な情報は
+      # Kubeadm ブートストラップ プロバイダーのドキュメントを参照してください
       joinConfiguration:
         nodeRegistration:
           kubeletExtraArgs:
@@ -1066,9 +1065,9 @@ spec:
 
 <aside class="note warning">
 
-<h1>Action Required</h1>
+<h1>必要なアクション</h1>
 
-Feel free to update instance types and zones below.
+以下のインスタンス タイプとゾーンを自由に更新してください。
 
 </aside>
 
@@ -1079,9 +1078,9 @@ metadata:
   name: capi-quickstart-worker
   labels:
     cluster.x-k8s.io/cluster-name: capi-quickstart
-    # Labels beyond this point are for example purposes,
-    # feel free to add more or change with something more meaningful.
-    # Sync these values with spec.selector.matchLabels and spec.template.metadata.labels.
+    # これより先のラベルは例示目的のものです。
+    # より意味のあるものを追加したり変更したりしてください。
+    # これらの値を spec.selector.matchLabels および spec.template.metadata.labels と一致させます。
     nodepool: nodepool-0
 spec:
   replicas: 1
@@ -1123,33 +1122,33 @@ metadata:
 spec:
   template:
     spec:
-      # For more information about these values,
-      # refer to the Kubeadm Bootstrap Provider documentation.
-      joinConfiguration:
+      # これらの値に関するより詳細な情報は
+      # Kubeadm ブートストラップ プロバイダーのドキュメントを参照してください
+     joinConfiguration:
         nodeRegistration:
           name: '{{ ds.meta_data.local_hostname }}'
           kubeletExtraArgs:
             cloud-provider: gce
 ```
 
-{{#/tab}}
+{{#/tab }}
 {{#tab vSphere}}
 
 <aside class="note warning">
 
-<h1>Action Required</h1>
+<h1>必要なアクション</h1>
 
-This quick start assumes the following vSphere environment which you should replace based on your own environment:
+このクイック スタートでは、あなたの環境に基づいて置き換える必要のある以下の vSphere 環境を想定しています。
 
-| Property       | Value                    | Description                                                                                                                                                           |
+| プロパティ       | 値                    | 説明                                                                                                                                                                     |
 |----------------|--------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| vCenter Server | 10.0.0.1                 | The IP address or fully-qualified domain name (FQDN) of the vCenter server                                                                                            |
-| Datacenter     | SDDC-Datacenter          | The datacenter to which VMs will be deployed                                                                                                                          |
-| Datastore      | DefaultDatastore         | The datastore to use for VMs                                                                                                                                          |
-| Resource Pool  | '*/Resources'            | The resource pool in which the VMs will be located. Please note that when using an * character in part of the inventory path, the entire value must be single quoted. |
-| VM Network     | vm-network-1             | The VM network to use for VMs                                                                                                                                         |
-| VM Folder      | vm                       | The VM folder in which VMs will be located                                                                                                                            |
-| VM Template    | ubuntu-1804-kube-v1.16.2 | The VM template to use for VMs                                                                                                                                        |
+| vCenter Server | 10.0.0.1                 | vCenter サーバーの IP アドレス、または完全修飾ドメイン名 (FQDN)                                                                                                              |
+| Datacenter     | SDDC-Datacenter          | VM がデプロイされるデータセンター                                                                                                                                          |
+| Datastore      | DefaultDatastore         | VM で使用するデータストア                                                                                                                                                |
+| Resource Pool  | '*/Resources'            | VM が配置されるリソース プール。インベントリ パスにアスタリスク (*) を使用する場合、全体をシングル クオートで囲う必要がある点に注意してください                                            |
+| VM Network     | vm-network-1             | VM で使用する VM ネットワーク                                                                                                                                            |
+| VM Folder      | vm                       | VM が配置される VM フォルダー                                                                                                                                            |
+| VM Template    | ubuntu-1804-kube-v1.16.2 | VM で使用する VM テンプレート                                                                                                                                            |
 
 </aside>
 
@@ -1160,9 +1159,9 @@ metadata:
   name: capi-quickstart-worker
   labels:
     cluster.x-k8s.io/cluster-name: capi-quickstart
-    # Labels beyond this point are for example purposes,
-    # feel free to add more or change with something more meaningful.
-    # Sync these values with spec.selector.matchLabels and spec.template.metadata.labels.
+    # これより先のラベルは例示目的のものです。
+    # より意味のあるものを追加したり変更したりしてください。
+    # これらの値を spec.selector.matchLabels および spec.template.metadata.labels と一致させます。
     nodepool: nodepool-0
 spec:
   replicas: 1
@@ -1232,9 +1231,9 @@ spec:
 
 <aside class="note warning">
 
-<h1>Action Required</h1>
+<h1>必要なアクション</h1>
 
-These examples include environment variables that you should substitute before creating the resources.
+これらの例には、リソースを作成する前に置き換える必要のある環境変数が含まれています。
 
 </aside>
 
@@ -1245,9 +1244,9 @@ metadata:
   name: capi-quickstart-worker
   labels:
     cluster.x-k8s.io/cluster-name: capi-quickstart
-    # Labels beyond this point are for example purposes,
-    # feel free to add more or change with something more meaningful.
-    # Sync these values with spec.selector.matchLabels and spec.template.metadata.labels.
+    # これより先のラベルは例示目的のものです。
+    # より意味のあるものを追加したり変更したりしてください。
+    # これらの値を spec.selector.matchLabels および spec.template.metadata.labels と一致させます。
     nodepool: nodepool-0
 spec:
   replicas: 1
@@ -1293,8 +1292,8 @@ metadata:
 spec:
   template:
     spec:
-      # For more information about these values,
-      # refer to the Kubeadm Bootstrap Provider documentation.
+      # これらの値に関するより詳細な情報は
+      # Kubeadm ブートストラップ プロバイダーのドキュメントを参照してください
       joinConfiguration:
         nodeRegistration:
           name: '{{ local_hostname }}'
@@ -1307,8 +1306,7 @@ spec:
         owner: root
         permissions: "0600"
         encoding: base64
-        # This file has to be in the format of the
-        # OpenStack cloud provider 
+        # このファイルは OpenStack クラウド プロバイダーの形式である必要があります
         content: |-
           ${OPENSTACK_CLOUD_CONFIG_B64ENCODED}
       - path: /etc/certs/cacert
