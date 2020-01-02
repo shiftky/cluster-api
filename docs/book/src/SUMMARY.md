@@ -2,6 +2,7 @@
 
 [Introduction](./introduction.md)
 [Quick Start](./user/quick-start.md)
+[クイック スタート](./user/quick-start-ja.md)
 [Concepts](./user/concepts.md)
 - [Tasks](./tasks/index.md)
     - [Installation](./tasks/installation.md)
