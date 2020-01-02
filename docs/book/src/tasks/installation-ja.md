@@ -1,13 +1,13 @@
-# Installation
+# インストール
 
-## Prerequisites
+## 前提条件
 
-- Install and setup [kubectl] in your local environment.
-- Install and/or configure a [management cluster]
+- ローカル環境に [kubectl] をインストールしセットアップします
+- [management cluster] をインストールし構成します
 
-## Setup Management Cluster
+## マネジメント クラスターのセットアップ
 
-Cluster API requires an existing kubernetes cluster accessible via kubectl, choose one of the options below:
+Cluster API は kubectl を介してアクセスできる既存の Kubernetes クラスターを必要とします。以下のオプションから 1 つ選択します:
 
 1. **Kind**
 
@@ -16,11 +16,11 @@ Cluster API requires an existing kubernetes cluster accessible via kubectl, choo
 
 <aside class="note warning">
 
-<h1>Warning</h1>
+<h1>注意</h1>
 
-**Minimum [kind] supported version**: v0.6.x
+**サポートされる [kind] の最小のバージョン** : v0.6.x
 
-[kind] is not designed for production use, and is intended for development environments only.
+[kind] は本番環境用に設計されたものではなく、開発環境のみを対象としています。
 
 </aside>
 
@@ -33,22 +33,23 @@ Cluster API requires an existing kubernetes cluster accessible via kubectl, choo
 
 <aside class="note warning">
 
-<h1>Warning</h1>
+<h1>注意</h1>
 
-**Minimum [kind] supported version**: v0.6.x
+**サポートされる [kind] の最小のバージョン** : v0.6.x
 
-[kind] is not designed for production use, and is intended for development environments only.
+[kind] は本番環境用に設計されたものではなく、開発環境のみを対象としています。
+
 </aside>
 
 <aside class="note warning">
 
-<h1>Warning</h1>
+<h1>注意</h1>
 
-The Docker provider is not designed for production use and is intended for development environments only.
+Docker プロバイダーは本番環境用に設計されたものではなく、開発環境のみを対象としています。
 
 </aside>
 
-  Because the Docker provider needs to access Docker on the host, a custom kind cluster configuration is required:
+  Docker プロバイダーはホスト上の Docker にアクセスする必要があるため、カスタムの Cluster 用の設定が必要です:
 
   ```bash
   cat > kind-cluster-with-extramounts.yaml <<EOF
@@ -67,35 +68,35 @@ EOF
 {{#/tabs }}
 
 
-2. **Existing Management Cluster**
+2. **既存のマネジメント クラスター**
 
-For production use-cases a "real" kubernetes cluster should be used with appropriate backup and DR policies and procedures in place.
+プロダクション向けのユースケースでは、適切なバックアップとディザスタ リカバリー ポリシーおよび手順を備えた「実際の」 Kubernetes クラスターを使う必要があります。
 
 ```bash
 export KUBECONFIG=<...>
 ```
 
-3. **Pivoting**
+3. **ピボット**
 
-Pivoting is the process of taking an initial kind cluster to create a new workload cluster, and then converting the workload cluster into a management cluster by migrating the Cluster API CRD's.
+ピボットは、最初の kind Cluster を取得して新しいワークロード クラスターを作成し、 Cluster API の CRD を移行してワークロード クラスターをマネジメント クラスターに変換するプロセスです。
 
 
-## Installation
+## インストール
 
-Using [kubectl], create the components on the [management cluster]:
+[kubectl] を使って、 [management cluster] にコンポーネントを作成します:
 
-#### Install Cluster API
+#### Cluster API のインストール
 
 ```bash
 kubectl create -f {{#releaselink gomodule:"sigs.k8s.io/cluster-api" asset:"cluster-api-components.yaml" version:"0.2.x"}}
 ```
 
-#### Install the Bootstrap Provider
+#### ブートストラップ プロバイダーのインストール
 
 {{#tabs name:"tab-installation-bootstrap" tabs:"Kubeadm"}}
 {{#tab Kubeadm}}
 
-Check the [Kubeadm provider releases](https://github.com/kubernetes-sigs/cluster-api-bootstrap-provider-kubeadm/releases) for an up-to-date components file.
+最新のコンポーネント ファイルについては [Kubeadm provider releases](https://github.com/kubernetes-sigs/cluster-api-bootstrap-provider-kubeadm/releases) を確認してください。
 
 ```bash
 kubectl create -f {{#releaselink gomodule:"sigs.k8s.io/cluster-api-bootstrap-provider-kubeadm" asset:"bootstrap-components.yaml" version:"0.1.x"}}
@@ -105,36 +106,36 @@ kubectl create -f {{#releaselink gomodule:"sigs.k8s.io/cluster-api-bootstrap-pro
 {{#/tabs }}
 
 
-#### Install Infrastructure Provider
+#### インフラストラクチャー プロバイダーのインストール
 
 {{#tabs name:"tab-installation-infrastructure" tabs:"AWS,Azure,Docker,GCP,vSphere,OpenStack"}}
 {{#tab AWS}}
 
 <aside class="note warning">
 
-<h1>Action Required</h1>
+<h1>必要なアクション</h1>
 
-For more information about credentials management, IAM, or requirements for AWS, visit the [AWS Provider Prerequisites](https://github.com/kubernetes-sigs/cluster-api-provider-aws/blob/master/docs/prerequisites.md) document.
+クレデンシャル管理、IAM、および AWS の要件に関する詳細な情報は、 [AWS Provider Prerequisites](https://github.com/kubernetes-sigs/cluster-api-provider-aws/blob/master/docs/prerequisites.md) ドキュメントを参照してください。
 
 </aside>
 
-#### Install clusterawsadm
+#### clusterawsadm のインストール
 
-Download the latest binary of `clusterawsadm` from the [AWS provider releases] and make sure to place it in your path.
+[AWS provider releases] から最新の `clusterawsadm` バイナリをダウンロードしパスに配置します。
 
-##### Create the components
+##### コンポーネントの作成
 
-Check the [AWS provider releases] for an up-to-date components file.
+最新のコンポーネント ファイルについては [AWS provider releases] を確認してください。
 
 ```bash
-# Create the base64 encoded credentials using clusterawsadm.
-# This command uses your environment variables and encodes
-# them in a value to be stored in a Kubernetes Secret.
+# clusterawsadm を使い、 Base64 でエンコードされたクレデンシャルを作成します。
+# このコマンドは環境変数とエンコーダーを使い、エンコードされたクレデンシャルを
+# Kubernetes Secret となる値に保存します。
 export AWS_B64ENCODED_CREDENTIALS=$(clusterawsadm alpha bootstrap encode-aws-credentials)
 
 The `envsubst` application is provided by the `gettext` package on Linux and via Brew on MacOS.
 
-# Create the components.
+# コンポーネントの作成
 curl -L {{#releaselink gomodule:"sigs.k8s.io/cluster-api-provider-aws" asset:"infrastructure-components.yaml" version:"0.4.x"}} \
   | envsubst \
   | kubectl create -f -
@@ -145,16 +146,16 @@ curl -L {{#releaselink gomodule:"sigs.k8s.io/cluster-api-provider-aws" asset:"in
 
 <aside class="note warning">
 
-<h1>Action Required</h1>
+<h1>必要なアクション</h1>
 
-For more information about authorization, AAD, or requirements for Azure, visit the [Azure Provider Prerequisites](https://github.com/kubernetes-sigs/cluster-api-provider-azure/blob/master/docs/getting-started.md#prerequisites) document.
+認可、 AAD 、および Azure の要件に関する詳細な情報は、 [Azure Provider Prerequisites](https://github.com/kubernetes-sigs/cluster-api-provider-azure/blob/master/docs/getting-started.md#prerequisites) ドキュメントを参照してください。
 
 </aside>
 
-Check the [Azure provider releases](https://github.com/kubernetes-sigs/cluster-api-provider-azure/releases) for an up-to-date components file.
+最新のコンポーネント ファイルについては [Azure provider releases](https://github.com/kubernetes-sigs/cluster-api-provider-azure/releases) を確認してください。
 
 ```bash
-# Create the base64 encoded credentials
+# Base64 でエンコードされたクレデンシャルを作成
 export AZURE_SUBSCRIPTION_ID_B64="$(echo -n "$AZURE_SUBSCRIPTION_ID" | base64 | tr -d '\n')"
 export AZURE_TENANT_ID_B64="$(echo -n "$AZURE_TENANT_ID" | base64 | tr -d '\n')"
 export AZURE_CLIENT_ID_B64="$(echo -n "$AZURE_CLIENT_ID" | base64 | tr -d '\n')"
@@ -170,7 +171,7 @@ curl -L {{#releaselink gomodule:"sigs.k8s.io/cluster-api-provider-azure" asset:"
 {{#/tab }}
 {{#tab Docker}}
 
-Check the [Docker provider releases](https://github.com/kubernetes-sigs/cluster-api-provider-docker/releases) for an up-to-date components file.
+最新のコンポーネント ファイルについては [Docker provider releases](https://github.com/kubernetes-sigs/cluster-api-provider-docker/releases) を確認してください。
 
 ```bash
 kubectl create -f {{#releaselink gomodule:"sigs.k8s.io/cluster-api-provider-docker" asset:"provider-components.yaml" version:"0.2.x"}}
@@ -181,23 +182,23 @@ kubectl create -f {{#releaselink gomodule:"sigs.k8s.io/cluster-api-provider-dock
 
 <aside class="note warning">
 
-<h1>Action Required</h1>
+<h1>必要なアクション</h1>
 
-Update the path to your GCP credentials file below.
+以下の GCP クレデンシャルへのパスを更新します。
 
 </aside>
 
-##### Create the components
+##### コンポーネントの作成
 
-Check the [GCP provider releases](https://github.com/kubernetes-sigs/cluster-api-provider-gcp/releases) for an up-to-date components file.
+最新のコンポーネント ファイルについては [GCP provider releases](https://github.com/kubernetes-sigs/cluster-api-provider-gcp/releases) を確認してください。
 
 ```bash
-# Create the base64 encoded credentials by catting your credentials json.
-# This command uses your environment variables and encodes
-# them in a value to be stored in a Kubernetes Secret.
+# クレデンシャル JSON をもとに、 Base64 でエンコードされたクレデンシャルを作成します。
+# このコマンドは環境変数とエンコーダーを使い、エンコードされたクレデンシャルを
+# Kubernetes Secret となる値に保存します。
 export GCP_B64ENCODED_CREDENTIALS=$( cat /path/to/gcp-credentials.json | base64 | tr -d '\n' )
 
-# Create the components.
+# コンポーネントの作成
 curl -L {{#releaselink gomodule:"sigs.k8s.io/cluster-api-provider-gcp" asset:"infrastructure-components.yaml" version:"0.3.x"}} \
   | envsubst \
   | kubectl create -f -
@@ -206,10 +207,11 @@ curl -L {{#releaselink gomodule:"sigs.k8s.io/cluster-api-provider-gcp" asset:"in
 {{#/tab }}
 {{#tab vSphere}}
 
-It is required to use an official CAPV machine image for your vSphere VM templates. See [Uploading CAPV Machine Images](https://github.com/kubernetes-sigs/cluster-api-provider-vsphere/blob/master/docs/getting_started.md#uploading-the-capv-machine-image) for instructions on how to do this.
+vSphere VM テンプレートには公式の CAPV マシン イメージを使う必要があります。
+これを行う方法については [Uploading CAPV Machine Images](https://github.com/kubernetes-sigs/cluster-api-provider-vsphere/blob/master/docs/getting_started.md#uploading-the-capv-machine-image) を参照してください。
 
 ```bash
-# Upload vCenter credentials as a Kubernetes secret
+# Kubernetes の Secret として vCenter クレデンシャルをアップロード
 $ cat <<EOF | kubectl apply -f -
 apiVersion: v1
 kind: Namespace
@@ -232,16 +234,16 @@ EOF
 $ kubectl create -f {{#releaselink gomodule:"sigs.k8s.io/cluster-api-provider-vsphere" asset:"infrastructure-components.yaml" version:"0.5.x"}}
 ```
 
-Check the [vSphere provider releases](https://github.com/kubernetes-sigs/cluster-api-provider-vsphere/releases) for an up-to-date components file.
+最新のコンポーネント ファイルについては [vSphere provider releases](https://github.com/kubernetes-sigs/cluster-api-provider-vsphere/releases) を確認してください。
 
-For more information about prerequisites, credentials management, or permissions for vSphere, visit the [getting started guide](https://github.com/kubernetes-sigs/cluster-api-provider-vsphere/blob/master/docs/getting_started.md).
+vSphere の要件、クレデンシャル管理、権限に関する詳細な情報は、 [getting started guide](https://github.com/kubernetes-sigs/cluster-api-provider-vsphere/blob/master/docs/getting_started.md) ドキュメントを参照してください。
 
 {{#/tab }}
 {{#tab OpenStack}}
 
-Check the [OpenStack provider releases](https://github.com/kubernetes-sigs/cluster-api-provider-openstack/releases) for an up-to-date components file.
+最新のコンポーネント ファイルについては [OpenStack provider releases](https://github.com/kubernetes-sigs/cluster-api-provider-openstack/releases) を確認してください。
 
-For more detailed information, e.g. about prerequisites visit the [getting started guide](https://github.com/kubernetes-sigs/cluster-api-provider-openstack/blob/master/docs/getting-started.md).
+前提条件などの詳細な情報については、 [getting started guide](https://github.com/kubernetes-sigs/cluster-api-provider-openstack/blob/master/docs/getting-started.md) ドキュメントを参照してください。
 
 ```bash
 kubectl create -f {{#releaselink gomodule:"sigs.k8s.io/cluster-api-provider-openstack" asset:"infrastructure-components.yaml" version:"0.2.x"}}
